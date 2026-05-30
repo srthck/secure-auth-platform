@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="SecureAuth Dashboard — Your personal protected area with session management." />
+  <title>Dashboard — SecureAuth</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    body { padding-top: 80px; }
+
+    .dashboard-hero {
+      background: linear-gradient(135deg, rgba(124,58,237,0.15), rgba(168,85,247,0.08));
+      border: 1px solid rgba(124,58,237,0.2);
+      border-radius: var(--radius-xl);
+      padding: 2rem 2.5rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dashboard-hero::before {
+      content: '';
+      position: absolute;
+      right: -60px; top: -60px;
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(124,58,237,0.3), transparent);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .hero-greeting {
+      font-size: 0.85rem;
+      color: var(--accent-secondary);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.3rem;
+    }
+
+    .hero-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .hero-subtitle {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    .token-card {
+      font-family: monospace;
+      font-size: 0.75rem;
+      color: var(--accent-secondary);
+      background: rgba(124,58,237,0.1);
+      border: 1px solid rgba(124,58,237,0.2);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      word-break: break-all;
+      line-height: 1.7;
+      margin-top: 1rem;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .info-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .info-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 600;
+    }
+
+    .info-value {
+      font-size: 0.95rem;
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    .protected-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(16,185,129,0.12);
+      border: 1px solid rgba(16,185,129,0.3);
+      color: #6ee7b7;
+      padding: 0.3rem 0.8rem;
+      border-radius: 99px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .pulse-dot {
+      width: 7px; height: 7px;
+      background: var(--success);
+      border-radius: 50%;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-animated">
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="bg-orb bg-orb-3"></div>
+  </div>
+  <div class="bg-grid"></div>
+
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container navbar-inner">
+      <a href="index.html" class="logo">
+        <div class="logo-icon">🔐</div>
+        <span class="logo-text">StudentPortal</span>
+      </a>
+      <div class="nav-actions">
+        <div class="protected-badge">
+          <div class="pulse-dot"></div>
+          Protected Route
+        </div>
+        <div class="user-pill" id="userPill">
+          <div class="user-avatar" id="userAvatar">?</div>
+          <span id="userPillName">Loading…</span>
+          <span class="badge badge-user" id="userPillRole" style="margin-left:4px;"></span>
+        </div>
+        <button class="btn btn-secondary btn-sm" id="logoutBtn">Sign Out</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <div class="container" style="padding-top:2rem; padding-bottom:3rem;">
+
+    <!-- Hero -->
+    <div class="dashboard-hero" id="dashboardHero">
+      <div class="hero-greeting">👋 Welcome to Student Hub</div>
+      <h1 class="hero-title" id="heroName">Loading…</h1>
+      <p class="hero-subtitle" id="heroSubtitle">Academic Session: 2026-27 · JWT Secured</p>
+      <div style="margin-top:1rem; display:flex; gap:0.75rem; flex-wrap:wrap;">
+        <span class="badge badge-online">● Session Active</span>
+        <span class="badge badge-user" id="heroBadge"></span>
+      </div>
+    </div>
+
+    <!-- Stats / Overview bar -->
+    <div class="stats-grid" id="statsGrid" style="margin-bottom: 1.5rem;">
+      <div class="stat-card">
+        <div class="stat-icon">🎓</div>
+        <div class="stat-value" id="statGPA">0.0</div>
+        <div class="stat-label">Overall GPA</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">💳</div>
+        <div class="stat-value" id="statFeeStatus">—</div>
+        <div class="stat-label">Fees Status</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">📅</div>
+        <div class="stat-value" id="statTodayClasses">0 Classes</div>
+        <div class="stat-label">Classes Scheduled</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">⏱️</div>
+        <div class="stat-value" id="statTokenExp">15m</div>
+        <div class="stat-label">Token TTL</div>
+      </div>
+    </div>
+
+    <!-- Student Core Modules -->
+    <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;" id="studentModules">
+      
+      <!-- Academic Transcript (Grades) -->
+      <div class="card" style="padding: 2rem;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+          <h2 class="section-title" style="margin-bottom: 0;">📝 Academic Progress</h2>
+          <span class="badge badge-online" id="gpaBadge" style="background:rgba(16,185,129,0.15); color:var(--success);">GPA: 0.0</span>
+        </div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Course</th>
+                <th style="text-align: center;">Score (%)</th>
+                <th style="text-align: center;">Grade</th>
+              </tr>
+            </thead>
+            <tbody id="marksTableBody">
+              <tr><td colspan="3" style="text-align: center;">Loading grades…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Weekly Schedule (Timetable) -->
+      <div class="card" style="padding: 2rem;">
+        <h2 class="section-title">📅 Timetable & Classes</h2>
+        <div style="display: flex; flex-direction: column; gap: 0.75rem;" id="timetableList">
+          <div style="text-align: center; color: var(--text-muted); padding: 1.5rem;">Loading classes…</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Student Finance Module -->
+    <div class="card" style="padding: 2rem; margin-bottom: 1.5rem;" id="financeModule">
+      <h2 class="section-title">💳 Financial Portal</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 1.2rem;">
+        <div class="info-item">
+          <span class="info-label">Total Tuition Fees</span>
+          <span class="info-value" id="feeTotal">₹0.00</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Fees Paid</span>
+          <span class="info-value" id="feePaid" style="color: var(--success);">₹0.00</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Outstanding Balance</span>
+          <span class="info-value" id="feeBalance" style="color: var(--error);">₹0.00</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Payment Status</span>
+          <div><span class="badge" id="feeStatusBadge">—</span></div>
+        </div>
+      </div>
+      
+      <!-- Progress Bar -->
+      <div class="password-strength" style="height: 10px; margin-bottom: 1.2rem; background: rgba(255,255,255,0.05);">
+        <div class="strength-bar" id="feeProgressBar" style="width: 0%; background: var(--success);"></div>
+      </div>
+
+      <button class="btn btn-secondary btn-sm" id="payFeesBtn">💳 Make Custom Fee Payment</button>
+    </div>
+
+    <!-- User Info -->
+    <div class="card" style="padding:2rem; margin-bottom:1.5rem;">
+      <h2 class="section-title">🪪 Account Details</h2>
+      <div class="info-grid" id="infoGrid">
+        <div class="info-item">
+          <span class="info-label">User ID</span>
+          <span class="info-value" id="infoId">—</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Username</span>
+          <span class="info-value" id="infoUsername">—</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Email</span>
+          <span class="info-value" id="infoEmail">—</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Role</span>
+          <span class="info-value" id="infoRole">—</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Account Created</span>
+          <span class="info-value" id="infoCreated">—</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Last Login</span>
+          <span class="info-value" id="infoLastLogin">—</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- System Overview / Architecture Visibility Card -->
+    <div class="card" style="padding:2rem; margin-bottom:1.5rem; background:linear-gradient(135deg, rgba(124,58,237,0.08), rgba(168,85,247,0.03)); border-color:rgba(124,58,237,0.25);">
+      <h2 class="section-title" style="color:var(--accent-secondary); margin-bottom: 0.3rem;">🏗️ System Architecture &amp; Engineering</h2>
+      <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1.2rem;">
+        Reviewer Access: Complete overview of the project's technical stack and security layers.
+      </p>
+      
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:1.2rem;">
+        
+        <div style="padding:1rem; background:rgba(255,255,255,0.02); border:1px solid var(--border); border-radius:var(--radius-md);">
+          <div style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.05em; font-weight:600; margin-bottom:0.4rem;">💻 Frontend</div>
+          <div style="font-size:0.95rem; font-weight:700; color:var(--text-primary);">HTML5 &amp; CSS3</div>
+          <div style="font-size:0.75rem; color:var(--text-secondary); margin-top:0.2rem;">ES6+ JS (No frameworks)</div>
+        </div>
+
+        <div style="padding:1rem; background:rgba(255,255,255,0.02); border:1px solid var(--border); border-radius:var(--radius-md);">
+          <div style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.05em; font-weight:600; margin-bottom:0.4rem;">⚙️ Backend</div>
+          <div style="font-size:0.95rem; font-weight:700; color:var(--text-primary);">Node.js + Express</div>
+          <div style="font-size:0.75rem; color:var(--text-secondary); margin-top:0.2rem;">Helmet.js &amp; Rate-Limiting</div>
+        </div>
+
+        <div style="padding:1rem; background:rgba(255,255,255,0.02); border:1px solid var(--border); border-radius:var(--radius-md);">
+          <div style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.05em; font-weight:600; margin-bottom:0.4rem;">🗄️ Database</div>
+          <div style="font-size:0.95rem; font-weight:700; color:var(--text-primary);">LowDB (JSON Store)</div>
+          <div style="font-size:0.75rem; color:var(--text-secondary); margin-top:0.2rem;">Persistent File Database</div>
+        </div>
+
+        <div style="padding:1rem; background:rgba(255,255,255,0.02); border:1px solid var(--border); border-radius:var(--radius-md);">
+          <div style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.05em; font-weight:600; margin-bottom:0.4rem;">🔑 Security &amp; Auth</div>
+          <div style="font-size:0.95rem; font-weight:700; color:var(--text-primary);">JWT + Refresh Tokens</div>
+          <div style="font-size:0.75rem; color:var(--text-secondary); margin-top:0.2rem;">Bcrypt (12 Rounds) &amp; Blacklist</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Admin link if applicable -->
+    <div class="card" style="padding:1.5rem;" id="adminCard">
+      <h2 class="section-title">🛡️ Navigation</h2>
+      <div style="display:flex; gap:0.75rem; flex-wrap:wrap;">
+        <a href="index.html" class="btn btn-secondary btn-sm">🏠 Login Page</a>
+        <a href="register.html" class="btn btn-secondary btn-sm">✏️ Register</a>
+        <a href="admin.html" class="btn btn-sm" id="adminLink"
+           style="background:rgba(245,158,11,0.12);color:#fcd34d;border:1px solid rgba(245,158,11,0.3);">
+          👑 Admin Panel
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="js/auth.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

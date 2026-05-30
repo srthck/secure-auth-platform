@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Create your SecureAuth account — Fast, secure registration with password hashing and role-based access." />
+  <title>Register — SecureAuth</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <div class="bg-animated">
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="bg-orb bg-orb-3"></div>
+  </div>
+  <div class="bg-grid"></div>
+
+  <div class="toast-container" id="toastContainer"></div>
+
+  <div class="page-wrapper">
+    <div class="auth-card card" style="max-width:500px;">
+
+      <div style="display:flex; justify-content:center; margin-bottom:1.8rem;">
+        <a href="index.html" class="logo">
+          <div class="logo-icon">🔐</div>
+          <span class="logo-text">SecureAuth</span>
+        </a>
+      </div>
+
+      <div class="auth-header">
+        <div class="auth-icon">🚀</div>
+        <h1 class="auth-title">Create Account</h1>
+        <p class="auth-subtitle">Join SecureAuth — your credentials are safely hashed</p>
+      </div>
+
+      <div id="alertBox" style="display:none;"></div>
+
+      <form id="registerForm" novalidate>
+
+        <div class="form-group">
+          <label class="form-label" for="regUsername">Username</label>
+          <div class="input-wrapper">
+            <input
+              type="text"
+              id="regUsername"
+              class="form-input"
+              placeholder="Choose a username"
+              autocomplete="username"
+              required
+              minlength="3"
+            />
+            <span class="input-icon">😎</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="regEmail">Email Address</label>
+          <div class="input-wrapper">
+            <input
+              type="email"
+              id="regEmail"
+              class="form-input"
+              placeholder="you@example.com"
+              autocomplete="email"
+              required
+            />
+            <span class="input-icon">✉️</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="regPassword">Password</label>
+          <div class="input-wrapper">
+            <input
+              type="password"
+              id="regPassword"
+              class="form-input"
+              placeholder="Min. 8 characters"
+              autocomplete="new-password"
+              required
+              minlength="8"
+            />
+            <span class="input-icon">🔑</span>
+            <button type="button" class="toggle-password" id="toggleRegPwd">👁️</button>
+          </div>
+          <!-- Password Strength -->
+          <div class="password-strength" style="margin-top:0.5rem;">
+            <div class="strength-bar" id="strengthBar"></div>
+          </div>
+          <p class="strength-text" id="strengthText" style="color:var(--text-muted);"></p>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="regConfirm">Confirm Password</label>
+          <div class="input-wrapper">
+            <input
+              type="password"
+              id="regConfirm"
+              class="form-input"
+              placeholder="Repeat your password"
+              autocomplete="new-password"
+              required
+            />
+            <span class="input-icon">🔒</span>
+          </div>
+        </div>
+
+        <!-- Role Selection -->
+        <div class="form-group">
+          <label class="form-label">Account Role</label>
+          <div class="role-selector">
+            <div>
+              <input type="radio" name="role" id="roleUser" value="user" class="role-option" checked />
+              <label for="roleUser" class="role-label">🎓 &nbsp;Student</label>
+            </div>
+            <div>
+              <input type="radio" name="role" id="roleAdmin" value="admin" class="role-option" />
+              <label for="roleAdmin" class="role-label">👑 &nbsp;Admin</label>
+            </div>
+          </div>
+          <p style="font-size:0.75rem; color:var(--text-muted); margin-top:0.4rem;">
+            ⚠️ Admin role is only granted to the <strong>first admin</strong> registration.
+          </p>
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="registerBtn">
+          <span class="btn-spinner"></span>
+          <span class="btn-text">Create Account &nbsp;→</span>
+        </button>
+
+      </form>
+
+      <div class="auth-link">
+        Already have an account? <a href="index.html">Sign in</a>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="js/auth.js"></script>
+  <script>
+    if (localStorage.getItem('accessToken')) {
+      window.location.href = 'dashboard.html';
+    }
+
+    // Toggle password
+    document.getElementById('toggleRegPwd').addEventListener('click', () => {
+      const pwd = document.getElementById('regPassword');
+      const btn = document.getElementById('toggleRegPwd');
+      pwd.type = pwd.type === 'password' ? 'text' : 'password';
+      btn.textContent = pwd.type === 'password' ? '👁️' : '🙈';
+    });
+
+    // Password strength checker
+    document.getElementById('regPassword').addEventListener('input', () => {
+      const pwd = document.getElementById('regPassword').value;
+      const bar = document.getElementById('strengthBar');
+      const txt = document.getElementById('strengthText');
+
+      let score = 0;
+      if (pwd.length >= 8)              score++;
+      if (/[A-Z]/.test(pwd))            score++;
+      if (/[0-9]/.test(pwd))            score++;
+      if (/[^A-Za-z0-9]/.test(pwd))    score++;
+
+      const levels = [
+        { label: '', color: '', width: '0%' },
+        { label: 'Weak',      color: '#ef4444', width: '25%' },
+        { label: 'Fair',      color: '#f59e0b', width: '50%' },
+        { label: 'Good',      color: '#3b82f6', width: '75%' },
+        { label: 'Strong 💪', color: '#10b981', width: '100%' },
+      ];
+
+      const level = levels[score] || levels[0];
+      bar.style.width = level.width;
+      bar.style.background = level.color;
+      txt.textContent = pwd.length > 0 ? `Password strength: ${level.label}` : '';
+      txt.style.color = level.color;
+    });
+
+    // Register form submit
+    document.getElementById('registerForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('registerBtn');
+
+      const username = document.getElementById('regUsername').value.trim();
+      const email    = document.getElementById('regEmail').value.trim();
+      const password = document.getElementById('regPassword').value;
+      const confirm  = document.getElementById('regConfirm').value;
+      const role     = document.querySelector('input[name="role"]:checked').value;
+
+      if (password !== confirm) {
+        showAlert('Passwords do not match.', 'error');
+        return;
+      }
+
+      showAlert('', '');
+      setLoading(btn, true);
+
+      try {
+        const res = await fetch(`${API}/auth/register`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, email, password, role })
+        });
+
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+          localStorage.setItem('accessToken', data.accessToken);
+          localStorage.setItem('refreshToken', data.refreshToken);
+          localStorage.setItem('user', JSON.stringify(data.user));
+          showToast('🎉 Account created! Redirecting…', 'success');
+          setTimeout(() => {
+            window.location.href = data.user.role === 'admin' ? 'admin.html' : 'dashboard.html';
+          }, 900);
+        } else {
+          showAlert(data.message || 'Registration failed.', 'error');
+        }
+      } catch (err) {
+        showAlert('Cannot connect to server. Make sure the backend is running on port 5000.', 'error');
+      } finally {
+        setLoading(btn, false);
+      }
+    });
+  </script>
+</body>
+</html>

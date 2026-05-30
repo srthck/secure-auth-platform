@@ -1,0 +1,348 @@
+{
+  "users": [
+    {
+      "id": "2da1b5bc-8cc2-4199-a0d5-df20da76dfa8",
+      "username": "polsudarshan57",
+      "email": "polsudarshan5757@gmail.com",
+      "password": "$2a$12$5PjzxZ3jyIUZvUWhtTJhHuC2P3ABlzeG8rXGBemrKhrKck4wUb0pe",
+      "role": "user",
+      "createdAt": "2026-05-29T17:22:35.001Z",
+      "lastLogin": "2026-05-29T17:23:10.735Z"
+    },
+    {
+      "id": "b2089366-cd78-452c-8599-b9dddaa45ec0",
+      "username": "demouser",
+      "email": "demouser@secureauth.dev",
+      "password": "$2a$12$A9cygtHvB8ccS/1Nkw.ffuE5tghrinCklpgqAowgLhvJvKi/3gP/.",
+      "role": "user",
+      "createdAt": "2026-05-29T17:28:11.707Z",
+      "lastLogin": "2026-05-29T17:28:12.165Z",
+      "marks": [
+        {
+          "course": "CS-101: Computer Science Fundamentals",
+          "score": 92,
+          "grade": "A"
+        },
+        {
+          "course": "MATH-201: Calculus & Linear Algebra",
+          "score": 85,
+          "grade": "A-"
+        },
+        {
+          "course": "PHY-102: Computational Physics",
+          "score": 78,
+          "grade": "B+"
+        },
+        {
+          "course": "ENG-110: Technical Communication",
+          "score": 95,
+          "grade": "A+"
+        }
+      ],
+      "fees": {
+        "total": 85000,
+        "paid": 60000,
+        "balance": 25000,
+        "status": "Partial"
+      },
+      "timetable": [
+        {
+          "day": "Monday",
+          "time": "09:00 AM - 10:30 AM",
+          "course": "MATH-201",
+          "room": "L-201"
+        },
+        {
+          "day": "Monday",
+          "time": "11:00 AM - 12:30 PM",
+          "course": "CS-101",
+          "room": "Lab-4"
+        },
+        {
+          "day": "Wednesday",
+          "time": "09:00 AM - 10:30 AM",
+          "course": "MATH-201",
+          "room": "L-201"
+        },
+        {
+          "day": "Wednesday",
+          "time": "01:00 PM - 02:30 PM",
+          "course": "PHY-102",
+          "room": "Phy-Lab"
+        },
+        {
+          "day": "Thursday",
+          "time": "11:00 AM - 12:30 PM",
+          "course": "CS-101",
+          "room": "Lab-4"
+        },
+        {
+          "day": "Friday",
+          "time": "10:00 AM - 11:30 AM",
+          "course": "ENG-110",
+          "room": "Seminar-A"
+        }
+      ]
+    },
+    {
+      "id": "f70230a2-4981-417e-98a2-8bba0b072a77",
+      "username": "polsudarshan12",
+      "email": "polsudarshan12@gmail.com",
+      "password": "$2a$12$O8EcTSC1HnEuNB.7baiPyOFJp/SYX2/RSbceeaBSHtWKA8IN/6IRC",
+      "role": "user",
+      "createdAt": "2026-05-29T17:29:20.215Z",
+      "lastLogin": "2026-05-29T17:37:44.591Z",
+      "marks": [
+        {
+          "course": "CS-101: Computer Science Fundamentals",
+          "score": 92,
+          "grade": "A"
+        },
+        {
+          "course": "MATH-201: Calculus & Linear Algebra",
+          "score": 85,
+          "grade": "A-"
+        },
+        {
+          "course": "PHY-102: Computational Physics",
+          "score": 78,
+          "grade": "B+"
+        },
+        {
+          "course": "ENG-110: Technical Communication",
+          "score": 95,
+          "grade": "A+"
+        }
+      ],
+      "fees": {
+        "total": 85000,
+        "paid": 60000,
+        "balance": 25000,
+        "status": "Partial"
+      },
+      "timetable": [
+        {
+          "day": "Monday",
+          "time": "09:00 AM - 10:30 AM",
+          "course": "MATH-201",
+          "room": "L-201"
+        },
+        {
+          "day": "Monday",
+          "time": "11:00 AM - 12:30 PM",
+          "course": "CS-101",
+          "room": "Lab-4"
+        },
+        {
+          "day": "Wednesday",
+          "time": "09:00 AM - 10:30 AM",
+          "course": "MATH-201",
+          "room": "L-201"
+        },
+        {
+          "day": "Wednesday",
+          "time": "01:00 PM - 02:30 PM",
+          "course": "PHY-102",
+          "room": "Phy-Lab"
+        },
+        {
+          "day": "Thursday",
+          "time": "11:00 AM - 12:30 PM",
+          "course": "CS-101",
+          "room": "Lab-4"
+        },
+        {
+          "day": "Friday",
+          "time": "10:00 AM - 11:30 AM",
+          "course": "ENG-110",
+          "room": "Seminar-A"
+        }
+      ]
+    },
+    {
+      "id": "4bfa60a4-ad03-492c-8a53-a10af97068f3",
+      "username": "sk",
+      "email": "sk@gmail.com",
+      "password": "$2a$12$dbGnyGCzTECLyt1Uw7CVIuC5T5smgSlEN7DmA6XB6uNAxUX.uuLy2",
+      "role": "user",
+      "createdAt": "2026-05-30T05:24:50.542Z",
+      "lastLogin": "2026-05-30T05:25:53.890Z",
+      "marks": [
+        {
+          "course": "CS-101: Computer Science Fundamentals",
+          "score": 92,
+          "grade": "A"
+        },
+        {
+          "course": "MATH-201: Calculus & Linear Algebra",
+          "score": 85,
+          "grade": "A-"
+        },
+        {
+          "course": "PHY-102: Computational Physics",
+          "score": 78,
+          "grade": "B+"
+        },
+        {
+          "course": "ENG-110: Technical Communication",
+          "score": 95,
+          "grade": "A+"
+        }
+      ],
+      "fees": {
+        "total": 85000,
+        "paid": 60000,
+        "balance": 25000,
+        "status": "Partial"
+      },
+      "timetable": [
+        {
+          "day": "Monday",
+          "time": "09:00 AM - 10:30 AM",
+          "course": "MATH-201",
+          "room": "L-201"
+        },
+        {
+          "day": "Monday",
+          "time": "11:00 AM - 12:30 PM",
+          "course": "CS-101",
+          "room": "Lab-4"
+        },
+        {
+          "day": "Wednesday",
+          "time": "09:00 AM - 10:30 AM",
+          "course": "MATH-201",
+          "room": "L-201"
+        },
+        {
+          "day": "Wednesday",
+          "time": "01:00 PM - 02:30 PM",
+          "course": "PHY-102",
+          "room": "Phy-Lab"
+        },
+        {
+          "day": "Thursday",
+          "time": "11:00 AM - 12:30 PM",
+          "course": "CS-101",
+          "room": "Lab-4"
+        },
+        {
+          "day": "Friday",
+          "time": "10:00 AM - 11:30 AM",
+          "course": "ENG-110",
+          "room": "Seminar-A"
+        }
+      ]
+    },
+    {
+      "id": "9d3793ec-aa0e-4d02-b37b-6078f9c91efa",
+      "username": "sarthak",
+      "email": "sarthakkadam.sk07@gmail.com",
+      "password": "$2a$12$LkoK7Up4rsDzPdNLsPBJteIl5RbWMZPMatN1zxB4MInCfpkYRoffy",
+      "role": "user",
+      "createdAt": "2026-05-30T05:50:24.449Z",
+      "lastLogin": null,
+      "marks": [
+        {
+          "course": "CS-101: Computer Science Fundamentals",
+          "score": 92,
+          "grade": "A"
+        },
+        {
+          "course": "MATH-201: Calculus & Linear Algebra",
+          "score": 85,
+          "grade": "A-"
+        },
+        {
+          "course": "PHY-102: Computational Physics",
+          "score": 78,
+          "grade": "B+"
+        },
+        {
+          "course": "ENG-110: Technical Communication",
+          "score": 95,
+          "grade": "A+"
+        }
+      ],
+      "fees": {
+        "total": 85000,
+        "paid": 60000,
+        "balance": 25000,
+        "status": "Partial"
+      },
+      "timetable": [
+        {
+          "day": "Monday",
+          "time": "09:00 AM - 10:30 AM",
+          "course": "MATH-201",
+          "room": "L-201"
+        },
+        {
+          "day": "Monday",
+          "time": "11:00 AM - 12:30 PM",
+          "course": "CS-101",
+          "room": "Lab-4"
+        },
+        {
+          "day": "Wednesday",
+          "time": "09:00 AM - 10:30 AM",
+          "course": "MATH-201",
+          "room": "L-201"
+        },
+        {
+          "day": "Wednesday",
+          "time": "01:00 PM - 02:30 PM",
+          "course": "PHY-102",
+          "room": "Phy-Lab"
+        },
+        {
+          "day": "Thursday",
+          "time": "11:00 AM - 12:30 PM",
+          "course": "CS-101",
+          "room": "Lab-4"
+        },
+        {
+          "day": "Friday",
+          "time": "10:00 AM - 11:30 AM",
+          "course": "ENG-110",
+          "room": "Seminar-A"
+        }
+      ]
+    },
+    {
+      "id": "288ebc0b-f6ff-4c64-beb4-379d32f637c9",
+      "username": "sk1",
+      "email": "www@gmail.com",
+      "password": "$2a$12$hOQmbB48TJ7pMc.hNfRH7.AUgCxWLonKp5QnjYOZCQmU6ekQXWpWe",
+      "role": "admin",
+      "createdAt": "2026-05-30T05:52:49.389Z",
+      "lastLogin": null
+    }
+  ],
+  "tokens": [
+    {
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjJkYTFiNWJjLThjYzItNDE5OS1hMGQ1LWRmMjBkYTc2ZGZhOCIsInVzZXJuYW1lIjoicG9sc3VkYXJzaGFuNTciLCJlbWFpbCI6InBvbHN1ZGFyc2hhbjU3NTdAZ21haWwuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3ODAwNzUzNTUsImV4cCI6MTc4MDA3NjI1NSwiYXVkIjoic2VjdXJlLWF1dGgtY2xpZW50IiwiaXNzIjoic2VjdXJlLWF1dGgtYXBwIn0.AYgldt3eGuvwPlbiyKjsQPHzz0TevCE3n6Qfk3wz1GM",
+      "invalidatedAt": "2026-05-29T17:23:00.592Z"
+    },
+    {
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjJkYTFiNWJjLThjYzItNDE5OS1hMGQ1LWRmMjBkYTc2ZGZhOCIsInVzZXJuYW1lIjoicG9sc3VkYXJzaGFuNTciLCJlbWFpbCI6InBvbHN1ZGFyc2hhbjU3NTdAZ21haWwuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3ODAwNzUzOTAsImV4cCI6MTc4MDA3NjI5MCwiYXVkIjoic2VjdXJlLWF1dGgtY2xpZW50IiwiaXNzIjoic2VjdXJlLWF1dGgtYXBwIn0.G7MV32MD23-2jALfMijpJ64brvjMDBXzbvHJe8DP8Bc",
+      "invalidatedAt": "2026-05-29T17:27:30.733Z"
+    },
+    {
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImIyMDg5MzY2LWNkNzgtNDUyYy04NTk5LWI5ZGRkYWE0NWVjMCIsInVzZXJuYW1lIjoiZGVtb3VzZXIiLCJlbWFpbCI6ImRlbW91c2VyQHNlY3VyZWF1dGguZGV2Iiwicm9sZSI6InVzZXIiLCJpYXQiOjE3ODAwNzU2OTIsImV4cCI6MTc4MDA3NjU5MiwiYXVkIjoic2VjdXJlLWF1dGgtY2xpZW50IiwiaXNzIjoic2VjdXJlLWF1dGgtYXBwIn0.EdNpSU-iPgPN5EoaLLXqrS3wUFDOAfVtIXw1gQt-GwU",
+      "invalidatedAt": "2026-05-29T17:28:22.306Z"
+    },
+    {
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImY3MDIzMGEyLTQ5ODEtNDE3ZS05OGEyLThiYmEwYjA3MmE3NyIsInVzZXJuYW1lIjoicG9sc3VkYXJzaGFuMTIiLCJlbWFpbCI6InBvbHN1ZGFyc2hhbjEyQGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzgwMDc2MDA3LCJleHAiOjE3ODAwNzY5MDcsImF1ZCI6InNlY3VyZS1hdXRoLWNsaWVudCIsImlzcyI6InNlY3VyZS1hdXRoLWFwcCJ9.tSaQbCj75OYV0uvYS4hmzDWCVuOemzDNuIt6vFVwRYI",
+      "invalidatedAt": "2026-05-29T17:36:34.397Z"
+    },
+    {
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjRiZmE2MGE0LWFkMDMtNDkyYy04YTUzLWExMGFmOTcwNjhmMyIsInVzZXJuYW1lIjoic2siLCJlbWFpbCI6InNrQGdtYWlsLmNvbSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzgwMTE4NjkwLCJleHAiOjE3ODAxMTk1OTAsImF1ZCI6InNlY3VyZS1hdXRoLWNsaWVudCIsImlzcyI6InNlY3VyZS1hdXRoLWFwcCJ9.kD52oKm08jcdlR-ADafKvB3oUDd0NFkxpd7_VBomgyg",
+      "invalidatedAt": "2026-05-30T05:25:40.362Z"
+    },
+    {
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjlkMzc5M2VjLWFhMGUtNGQwMi1iMzdiLTYwNzhmOWM5MWVmYSIsInVzZXJuYW1lIjoic2FydGhhayIsImVtYWlsIjoic2FydGhha2thZGFtLnNrMDdAZ21haWwuY29tIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3ODAxMjAyMjQsImV4cCI6MTc4MDEyMTEyNCwiYXVkIjoic2VjdXJlLWF1dGgtY2xpZW50IiwiaXNzIjoic2VjdXJlLWF1dGgtYXBwIn0.gUsXsWIKUl9HaPxIpQ1XMxyTF122TLKgv1eArvChf44",
+      "invalidatedAt": "2026-05-30T05:52:02.260Z"
+    }
+  ]
+}

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Secure User Authentication System — Sign in to your account securely with JWT-powered sessions." />
+  <title>Login — SecureAuth</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- Animated Background -->
+  <div class="bg-animated">
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="bg-orb bg-orb-3"></div>
+  </div>
+  <div class="bg-grid"></div>
+
+  <!-- Toast container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <div class="page-wrapper">
+    <div class="auth-card card">
+
+      <!-- Brand Logo -->
+      <div style="display:flex; justify-content:center; margin-bottom:1.8rem;">
+        <a href="index.html" class="logo">
+          <div class="logo-icon">🔐</div>
+          <span class="logo-text">SecureAuth</span>
+        </a>
+      </div>
+
+      <!-- Header -->
+      <div class="auth-header">
+        <div class="auth-icon">🎓</div>
+        <h1 class="auth-title">Portal Sign In</h1>
+        <p class="auth-subtitle">Access your Student Portal or Admin Control Center</p>
+      </div>
+
+      <!-- Alert box -->
+      <div id="alertBox" style="display:none;"></div>
+
+      <!-- Login Form -->
+      <form id="loginForm" novalidate>
+
+        <div class="form-group">
+          <label class="form-label" for="loginEmail">Email Address</label>
+          <div class="input-wrapper">
+            <input
+              type="email"
+              id="loginEmail"
+              class="form-input"
+              placeholder="you@school.edu"
+              autocomplete="email"
+              required
+            />
+            <span class="input-icon">✉️</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="loginPassword">Password</label>
+          <div class="input-wrapper">
+            <input
+              type="password"
+              id="loginPassword"
+              class="form-input"
+              placeholder="Enter your password"
+              autocomplete="current-password"
+              required
+            />
+            <span class="input-icon">🔑</span>
+            <button type="button" class="toggle-password" id="toggleLoginPwd" title="Show password">👁️</button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="loginBtn" style="margin-top:0.5rem;">
+          <span class="btn-spinner"></span>
+          <span class="btn-text">Sign In &nbsp;→</span>
+        </button>
+
+      </form>
+
+      <div class="auth-link">
+        Don't have an account? <a href="register.html">Create one free</a>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="js/auth.js"></script>
+  <script>
+    // Redirect if already logged in
+    if (localStorage.getItem('accessToken')) {
+      window.location.href = 'dashboard.html';
+    }
+
+    // Toggle password visibility
+    document.getElementById('toggleLoginPwd').addEventListener('click', () => {
+      const pwd = document.getElementById('loginPassword');
+      const btn = document.getElementById('toggleLoginPwd');
+      pwd.type = pwd.type === 'password' ? 'text' : 'password';
+      btn.textContent = pwd.type === 'password' ? '👁️' : '🙈';
+    });
+
+    // Login form submit
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('loginBtn');
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+
+      showAlert('', '');
+      setLoading(btn, true);
+
+      try {
+        const res = await fetch(`${API}/auth/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+          localStorage.setItem('accessToken', data.accessToken);
+          localStorage.setItem('refreshToken', data.refreshToken);
+          localStorage.setItem('user', JSON.stringify(data.user));
+          showToast('✅ Login successful! Redirecting…', 'success');
+          setTimeout(() => {
+            window.location.href = data.user.role === 'admin' ? 'admin.html' : 'dashboard.html';
+          }, 900);
+        } else {
+          showAlert(data.message || 'Login failed.', 'error');
+        }
+      } catch (err) {
+        showAlert('Cannot connect to server. Make sure the backend is running on port 5000.', 'error');
+      } finally {
+        setLoading(btn, false);
+      }
+    });
+  </script>
+</body>
+</html>

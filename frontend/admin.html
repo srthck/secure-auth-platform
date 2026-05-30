@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="SecureAuth Admin Panel — Role-based access control, user management, system statistics." />
+  <title>Admin Panel — SecureAuth</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    body { padding-top: 80px; }
+
+    .admin-hero {
+      background: linear-gradient(135deg, rgba(245,158,11,0.12), rgba(124,58,237,0.08));
+      border: 1px solid rgba(245,158,11,0.2);
+      border-radius: var(--radius-xl);
+      padding: 2rem 2.5rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .admin-hero::before {
+      content: '';
+      position: absolute;
+      right: -60px; top: -60px;
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(245,158,11,0.2), transparent);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .sys-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .sys-card {
+      padding: 1.4rem 1.2rem;
+      border-radius: var(--radius-lg);
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      transition: var(--transition);
+      text-align: center;
+    }
+
+    .sys-card:hover {
+      border-color: rgba(245,158,11,0.25);
+      transform: translateY(-2px);
+    }
+
+    .sys-val {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1;
+      margin-bottom: 0.3rem;
+    }
+
+    .sys-lbl {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 600;
+    }
+
+    .role-select {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text-primary);
+      padding: 0.3rem 0.6rem;
+      font-size: 0.82rem;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      outline: none;
+    }
+
+    .role-select:focus {
+      border-color: var(--border-focus);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 3rem 2rem;
+      color: var(--text-muted);
+    }
+
+    .empty-icon { font-size: 3rem; margin-bottom: 1rem; }
+    .empty-title { font-size: 1rem; font-weight: 600; color: var(--text-secondary); }
+
+    .admin-only-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(245,158,11,0.12);
+      border: 1px solid rgba(245,158,11,0.3);
+      color: #fcd34d;
+      padding: 0.3rem 0.8rem;
+      border-radius: 99px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .loading-row td {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-animated">
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="bg-orb bg-orb-3"></div>
+  </div>
+  <div class="bg-grid"></div>
+
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container navbar-inner">
+      <a href="index.html" class="logo">
+        <div class="logo-icon">🔐</div>
+        <span class="logo-text">StudentPortal</span>
+      </a>
+      <div class="nav-actions">
+        <div class="admin-only-badge">👑 Admin Access</div>
+        <div class="user-pill" id="userPill">
+          <div class="user-avatar" id="userAvatar">?</div>
+          <span id="userPillName">Loading…</span>
+          <span class="badge badge-admin" id="userPillRole" style="margin-left:4px;"></span>
+        </div>
+        <a href="dashboard.html" class="btn btn-secondary btn-sm">📊 Dashboard</a>
+        <button class="btn btn-secondary btn-sm" id="logoutBtn">Sign Out</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <div class="container" style="padding-top:2rem; padding-bottom:3rem;">
+
+    <!-- Hero -->
+    <div class="admin-hero">
+      <div class="hero-greeting" style="color:#fcd34d;">👑 Admin Control Center</div>
+      <h1 class="hero-title" style="font-family:'Space Grotesk',sans-serif;font-size:2rem;font-weight:700;margin-bottom:0.5rem;">
+        Student Records Management
+      </h1>
+      <p style="font-size:0.9rem;color:var(--text-secondary);">
+        Role-based permissions verified · You can modify student grades, fee ledgers, and manage accounts.
+      </p>
+      <div style="margin-top:1rem;">
+        <span class="badge badge-admin">👑 Admin Panel</span>
+      </div>
+    </div>
+
+    <!-- System Stats -->
+    <!-- System Overview Card (Architecture Visibility) -->
+    <div class="card" style="padding:1.5rem; margin-bottom:1rem; background:linear-gradient(135deg, rgba(124,58,237,0.06), rgba(168,85,247,0.02)); border-color:rgba(124,58,237,0.18);">
+      <h2 class="section-title" style="margin-bottom:0.5rem; color:var(--accent-secondary);">🏗️ System Overview</h2>
+      <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1rem;">Quick reference for reviewers showing the technical stack and security layers.</p>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:0.75rem;">
+        <div style="padding:0.8rem; background:rgba(255,255,255,0.02); border:1px solid var(--border); border-radius:var(--radius-md);">
+          <div style="font-size:0.72rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Frontend</div>
+          <div style="font-size:0.95rem; font-weight:700; margin-top:0.2rem;">HTML5 · CSS3</div>
+          <div style="font-size:0.75rem; color:var(--text-secondary);">Vanilla ES6+ JavaScript</div>
+        </div>
+
+        <div style="padding:0.8rem; background:rgba(255,255,255,0.02); border:1px solid var(--border); border-radius:var(--radius-md);">
+          <div style="font-size:0.72rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Backend</div>
+          <div style="font-size:0.95rem; font-weight:700; margin-top:0.2rem;">Node.js · Express</div>
+          <div style="font-size:0.75rem; color:var(--text-secondary);">Helmet, Rate-limiting, CORS</div>
+        </div>
+
+        <div style="padding:0.8rem; background:rgba(255,255,255,0.02); border:1px solid var(--border); border-radius:var(--radius-md);">
+          <div style="font-size:0.72rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Database</div>
+          <div style="font-size:0.95rem; font-weight:700; margin-top:0.2rem;">LowDB (JSON file)</div>
+          <div style="font-size:0.75rem; color:var(--text-secondary);">File-backed persistent store</div>
+        </div>
+
+        <div style="padding:0.8rem; background:rgba(255,255,255,0.02); border:1px solid var(--border); border-radius:var(--radius-md);">
+          <div style="font-size:0.72rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Authentication</div>
+          <div style="font-size:0.95rem; font-weight:700; margin-top:0.2rem;">JWT · Refresh Tokens</div>
+          <div style="font-size:0.75rem; color:var(--text-secondary);">Bcrypt (12 rounds) · Token blacklist</div>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="section-title" style="margin-bottom:1rem;">⚙️ System & Academic Statistics</h2>
+    <div class="sys-grid" id="sysGrid">
+      <div class="sys-card">
+        <div class="sys-val" id="sysTotal">—</div>
+        <div class="sys-lbl">Total Members</div>
+      </div>
+      <div class="sys-card">
+        <div class="sys-val" id="sysAdmins">—</div>
+        <div class="sys-lbl">Administrators</div>
+      </div>
+      <div class="sys-card">
+        <div class="sys-val" id="sysRegular">—</div>
+        <div class="sys-lbl">Students Enrolled</div>
+      </div>
+      <div class="sys-card">
+        <div class="sys-val" id="sysTokens">—</div>
+        <div class="sys-lbl">Outstanding Dues</div>
+      </div>
+      <div class="sys-card">
+        <div class="sys-val" id="sysNode" style="font-size:1.2rem;">—</div>
+        <div class="sys-lbl">Node Version</div>
+      </div>
+      <div class="sys-card">
+        <div class="sys-val" id="sysUptime" style="font-size:1.2rem;">—</div>
+        <div class="sys-lbl">Server Uptime</div>
+      </div>
+    </div>
+
+    <!-- User Management Table -->
+    <div class="card" style="padding:2rem; margin-bottom:1.5rem;">
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1.2rem; flex-wrap:wrap; gap:1rem;">
+        <h2 class="section-title" style="margin-bottom:0;">👥 Student & Staff Records</h2>
+        <button class="btn btn-secondary btn-sm" id="refreshBtn">🔄 Refresh Data</button>
+      </div>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Member Profile</th>
+              <th>Email Address</th>
+              <th style="text-align: center;">GPA / Grade</th>
+              <th style="text-align: center;">Tuition Paid</th>
+              <th>Status</th>
+              <th>Administrative Actions</th>
+            </tr>
+          </thead>
+          <tbody id="usersTableBody">
+            <tr class="loading-row">
+              <td colspan="6">⏳ Loading student files…</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="card" style="padding:1.5rem;">
+      <h2 class="section-title">🔗 Quick Links</h2>
+      <div style="display:flex; gap:0.75rem; flex-wrap:wrap;">
+        <a href="dashboard.html" class="btn btn-secondary btn-sm">📊 My Dashboard</a>
+        <a href="index.html" class="btn btn-secondary btn-sm">🏠 Login Page</a>
+        <a href="register.html" class="btn btn-secondary btn-sm">✏️ Register Page</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Student Record Editing Modal -->
+  <div id="editModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:9999; backdrop-filter:blur(10px); align-items:center; justify-content:center; padding:1rem;">
+    <div class="card" style="width:100%; max-width:480px; padding:2rem; background:rgba(14, 18, 32, 0.95); border:1px solid rgba(245,158,11,0.2); box-shadow:var(--shadow-lg);">
+      <h2 class="section-title" style="margin-bottom:1.2rem;" id="modalTitle">✏️ Edit Student Profile</h2>
+      
+      <form id="editForm" novalidate>
+        <input type="hidden" id="editUserId" />
+        
+        <div class="form-group">
+          <label class="form-label" for="editRole">Account Role</label>
+          <div class="input-wrapper">
+            <select class="form-input" id="editRole" style="padding-left:1rem; cursor:pointer;">
+              <option value="user">🎓 Student</option>
+              <option value="admin">👑 Administrator</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Student Specific Data -->
+        <div id="studentDataFields">
+          <h3 class="section-title" style="font-size:0.85rem; margin-top:1.5rem; margin-bottom:0.75rem; text-transform:uppercase; color:var(--accent-secondary); border-bottom: 1px solid var(--border); padding-bottom: 4px;">📝 Subject Performance</h3>
+          
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem;">
+            <div class="form-group">
+              <label class="form-label" style="font-size:0.7rem;" for="scoreCS">CS-101 (%)</label>
+              <input type="number" id="scoreCS" class="form-input" min="0" max="100" style="padding-left:1rem;" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label" style="font-size:0.7rem;" for="scoreMath">MATH-201 (%)</label>
+              <input type="number" id="scoreMath" class="form-input" min="0" max="100" style="padding-left:1rem;" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label" style="font-size:0.7rem;" for="scorePhy">PHY-102 (%)</label>
+              <input type="number" id="scorePhy" class="form-input" min="0" max="100" style="padding-left:1rem;" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label" style="font-size:0.7rem;" for="scoreEng">ENG-110 (%)</label>
+              <input type="number" id="scoreEng" class="form-input" min="0" max="100" style="padding-left:1rem;" required />
+            </div>
+          </div>
+
+          <h3 class="section-title" style="font-size:0.85rem; margin-top:1.5rem; margin-bottom:0.75rem; text-transform:uppercase; color:var(--accent-secondary); border-bottom: 1px solid var(--border); padding-bottom: 4px;">💳 Financial Ledger</h3>
+          
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem;">
+            <div class="form-group">
+              <label class="form-label" style="font-size:0.7rem;" for="feesPaidAmt">Tuition Paid (₹)</label>
+              <input type="number" id="feesPaidAmt" class="form-input" min="0" style="padding-left:1rem;" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label" style="font-size:0.7rem;" for="feesTotalAmt">Total Invoice (₹)</label>
+              <input type="number" id="feesTotalAmt" class="form-input" style="padding-left:1rem;" disabled />
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; gap:0.75rem; margin-top:2rem;">
+          <button type="button" class="btn btn-secondary btn-sm" id="closeModalBtn" style="padding: 0.6rem 1.2rem;">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-sm" style="width:auto; padding:0.6rem 1.5rem;" id="saveModalBtn">Save Details</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/auth.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script>
+    // Admin-specific page init
+    window.__isAdminPage = true;
+  </script>
+</body>
+</html>
